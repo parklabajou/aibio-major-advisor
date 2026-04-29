@@ -1,0 +1,1450 @@
+Aibio major advisor · HTML
+복사
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI바이오의약품 융합연계전공 이수과목 분석기</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0e1a;
+    --surface: #111827;
+    --surface2: #1a2236;
+    --border: #1e2d47;
+    --accent: #00c8ff;
+    --accent2: #7c3aed;
+    --accent3: #10b981;
+    --warn: #f59e0b;
+    --danger: #ef4444;
+    --text: #e2e8f0;
+    --text-dim: #64748b;
+    --text-mid: #94a3b8;
+    --glow: rgba(0,200,255,0.15);
+  }
+ 
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+ 
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Noto Sans KR', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+ 
+  /* Background grid */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0,200,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,200,255,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+ 
+  .container {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 0 20px 60px;
+    position: relative;
+    z-index: 1;
+  }
+ 
+  /* Header */
+  header {
+    padding: 48px 0 32px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 40px;
+  }
+ 
+  .badge {
+    display: inline-block;
+    background: rgba(0,200,255,0.1);
+    border: 1px solid rgba(0,200,255,0.3);
+    color: var(--accent);
+    font-size: 11px;
+    font-family: 'DM Mono', monospace;
+    letter-spacing: 2px;
+    padding: 4px 12px;
+    border-radius: 2px;
+    margin-bottom: 16px;
+  }
+ 
+  h1 {
+    font-size: clamp(24px, 4vw, 36px);
+    font-weight: 900;
+    letter-spacing: -1px;
+    line-height: 1.2;
+    margin-bottom: 8px;
+  }
+ 
+  h1 span { color: var(--accent); }
+ 
+  .subtitle {
+    color: var(--text-mid);
+    font-size: 14px;
+    font-weight: 300;
+  }
+ 
+  /* Step indicator */
+  .steps {
+    display: flex;
+    gap: 0;
+    margin-bottom: 32px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+ 
+  .step {
+    flex: 1;
+    padding: 14px;
+    text-align: center;
+    font-size: 12px;
+    color: var(--text-dim);
+    cursor: pointer;
+    transition: all 0.2s;
+    border-right: 1px solid var(--border);
+    font-weight: 500;
+  }
+  .step:last-child { border-right: none; }
+  .step.active {
+    background: rgba(0,200,255,0.08);
+    color: var(--accent);
+    border-bottom: 2px solid var(--accent);
+  }
+  .step.done { color: var(--accent3); }
+  .step-num {
+    display: block;
+    font-family: 'DM Mono', monospace;
+    font-size: 18px;
+    font-weight: 500;
+    margin-bottom: 2px;
+  }
+ 
+  /* Cards */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 28px;
+    margin-bottom: 20px;
+  }
+ 
+  .card-title {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .card-title::before {
+    content: '';
+    width: 3px;
+    height: 14px;
+    background: var(--accent);
+    border-radius: 2px;
+  }
+ 
+  /* Form elements */
+  label {
+    display: block;
+    font-size: 13px;
+    color: var(--text-mid);
+    margin-bottom: 8px;
+    font-weight: 500;
+  }
+ 
+  select, input[type="text"] {
+    width: 100%;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--text);
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 14px;
+    padding: 10px 14px;
+    outline: none;
+    transition: border-color 0.2s;
+    appearance: none;
+  }
+  select:focus, input:focus { border-color: var(--accent); }
+ 
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+  @media(max-width:700px){
+    .form-row { grid-template-columns: 1fr; }
+    .progress-group { grid-template-columns: 1fr; }
+    .rec-grid { grid-template-columns: 1fr; }
+    .tl-semester-grid { grid-template-columns: repeat(2,1fr) !important; }
+  }
+ 
+  /* Course list */
+  .course-search-wrap {
+    position: relative;
+    margin-bottom: 12px;
+  }
+  .course-search-wrap input {
+    padding-left: 36px;
+  }
+  .search-icon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-dim);
+    font-size: 14px;
+  }
+ 
+  .course-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 8px;
+    max-height: 420px;
+    overflow-y: auto;
+    padding-right: 4px;
+  }
+ 
+  .course-grid::-webkit-scrollbar { width: 4px; }
+  .course-grid::-webkit-scrollbar-track { background: var(--bg); }
+  .course-grid::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+ 
+  .course-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.15s;
+    user-select: none;
+  }
+  .course-item:hover { border-color: var(--accent); background: rgba(0,200,255,0.04); }
+  .course-item.selected {
+    border-color: var(--accent3);
+    background: rgba(16,185,129,0.08);
+  }
+  .course-item.selected .course-check { opacity: 1; }
+ 
+  .course-check {
+    width: 18px;
+    height: 18px;
+    border: 1.5px solid var(--border);
+    border-radius: 4px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    color: var(--accent3);
+    opacity: 0;
+    transition: opacity 0.15s;
+  }
+  .course-item.selected .course-check { border-color: var(--accent3); opacity: 1; }
+ 
+  .course-name {
+    font-size: 13px;
+    flex: 1;
+    line-height: 1.3;
+  }
+ 
+  .course-badge {
+    font-size: 10px;
+    font-family: 'DM Mono', monospace;
+    padding: 2px 6px;
+    border-radius: 3px;
+    flex-shrink: 0;
+  }
+  .badge-required {
+    background: rgba(239,68,68,0.15);
+    color: #fca5a5;
+    border: 1px solid rgba(239,68,68,0.3);
+  }
+  .badge-elective {
+    background: rgba(124,58,237,0.15);
+    color: #c4b5fd;
+    border: 1px solid rgba(124,58,237,0.3);
+  }
+ 
+  .credits-badge {
+    font-size: 10px;
+    font-family: 'DM Mono', monospace;
+    color: var(--text-dim);
+    flex-shrink: 0;
+  }
+ 
+  /* Filter tabs */
+  .filter-tabs {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+  }
+  .ftab {
+    padding: 5px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    cursor: pointer;
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+    background: var(--bg);
+    transition: all 0.15s;
+    font-weight: 500;
+  }
+  .ftab.active {
+    background: rgba(0,200,255,0.1);
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+ 
+  /* Buttons */
+  .btn {
+    padding: 12px 28px;
+    border-radius: 6px;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: none;
+    letter-spacing: 0.3px;
+  }
+  .btn-primary {
+    background: var(--accent);
+    color: #000;
+    box-shadow: 0 0 20px rgba(0,200,255,0.3);
+  }
+  .btn-primary:hover {
+    background: #33d4ff;
+    box-shadow: 0 0 30px rgba(0,200,255,0.5);
+    transform: translateY(-1px);
+  }
+  .btn-ghost {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text-mid);
+  }
+  .btn-ghost:hover { border-color: var(--text-mid); color: var(--text); }
+ 
+  .btn-row {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+    margin-top: 24px;
+  }
+ 
+  /* Results */
+  .result-section { display: none; }
+  .result-section.visible { display: block; }
+ 
+  /* Progress bars */
+  .progress-group {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+  @media(max-width: 600px){ .progress-group { grid-template-columns: 1fr; } }
+ 
+  .progress-card {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px;
+  }
+  .progress-label {
+    font-size: 12px;
+    color: var(--text-dim);
+    margin-bottom: 6px;
+    font-weight: 500;
+  }
+  .progress-value {
+    font-size: 28px;
+    font-family: 'DM Mono', monospace;
+    font-weight: 500;
+    margin-bottom: 10px;
+  }
+  .progress-value .total { font-size: 16px; color: var(--text-dim); }
+  .progress-bar-bg {
+    background: var(--bg);
+    border-radius: 4px;
+    height: 6px;
+    overflow: hidden;
+  }
+  .progress-bar-fill {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.8s cubic-bezier(0.4,0,0.2,1);
+  }
+ 
+  /* Status chips */
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+  }
+  .chip-ok { background: rgba(16,185,129,0.15); color: var(--accent3); border: 1px solid rgba(16,185,129,0.3); }
+  .chip-warn { background: rgba(245,158,11,0.15); color: var(--warn); border: 1px solid rgba(245,158,11,0.3); }
+  .chip-bad { background: rgba(239,68,68,0.15); color: var(--danger); border: 1px solid rgba(239,68,68,0.3); }
+ 
+  /* Course result table */
+  .result-table { width: 100%; border-collapse: collapse; margin-top: 4px; }
+  .result-table th {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 8px 12px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+  }
+  .result-table td {
+    font-size: 13px;
+    padding: 10px 12px;
+    border-bottom: 1px solid rgba(30,45,71,0.5);
+    vertical-align: middle;
+  }
+  .result-table tr:last-child td { border-bottom: none; }
+  .result-table tr:hover td { background: rgba(0,200,255,0.03); }
+ 
+  /* Recommend section */
+  .rec-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 10px;
+    margin-top: 8px;
+  }
+  .rec-item {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent2);
+    border-radius: 6px;
+    padding: 12px 14px;
+  }
+  .rec-item.priority { border-left-color: var(--danger); }
+  .rec-item.normal { border-left-color: var(--accent); }
+  .rec-item-name { font-size: 13px; font-weight: 500; margin-bottom: 4px; }
+  .rec-item-meta { font-size: 11px; color: var(--text-dim); display: flex; gap: 8px; flex-wrap: wrap; }
+ 
+  /* Warning box */
+  .warn-box {
+    background: rgba(245,158,11,0.07);
+    border: 1px solid rgba(245,158,11,0.25);
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin-bottom: 20px;
+    font-size: 13px;
+    color: #fcd34d;
+    line-height: 1.6;
+  }
+  .warn-box strong { color: var(--warn); }
+ 
+  .info-box {
+    background: rgba(0,200,255,0.05);
+    border: 1px solid rgba(0,200,255,0.2);
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin-bottom: 20px;
+    font-size: 13px;
+    color: var(--text-mid);
+    line-height: 1.6;
+  }
+  .info-box strong { color: var(--accent); }
+ 
+  /* Section divider */
+  .divider {
+    height: 1px;
+    background: var(--border);
+    margin: 24px 0;
+  }
+ 
+  /* Semester timeline */
+  .timeline {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    margin-top: 12px;
+  }
+  @media(max-width: 700px){ .timeline { grid-template-columns: repeat(2, 1fr); } }
+  .tl-col { }
+  .tl-header {
+    font-size: 11px;
+    font-family: 'DM Mono', monospace;
+    color: var(--text-dim);
+    text-align: center;
+    padding: 8px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 4px 4px 0 0;
+    margin-bottom: 2px;
+  }
+  .tl-course {
+    font-size: 11px;
+    padding: 7px 8px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    margin-bottom: 2px;
+    border-radius: 3px;
+    line-height: 1.3;
+  }
+  .tl-course.done { opacity: 0.4; text-decoration: line-through; }
+  .tl-course.req { border-left: 2px solid var(--danger); }
+  .tl-course.elec { border-left: 2px solid var(--accent2); }
+ 
+  /* Page transitions */
+  .page { display: none; animation: fadeIn 0.3s ease; }
+  .page.active { display: block; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+ 
+  /* Selected count banner */
+  .selected-banner {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: rgba(10,14,26,0.95);
+    border-bottom: 1px solid var(--border);
+    padding: 12px 20px;
+    margin: -28px -28px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    backdrop-filter: blur(8px);
+  }
+  .selected-count {
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    color: var(--accent);
+  }
+ 
+  .empty-state {
+    text-align: center;
+    padding: 40px;
+    color: var(--text-dim);
+    font-size: 14px;
+  }
+ 
+  .highlight { color: var(--accent); font-weight: 700; }
+ 
+  /* Print / export note */
+  .export-note {
+    text-align: center;
+    font-size: 12px;
+    color: var(--text-dim);
+    margin-top: 32px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <div class="badge">AJOU UNIVERSITY · BeSPoKe</div>
+    <h1>AI바이오의약품<br><span>융합연계전공</span> 이수과목 분석기</h1>
+    <p class="subtitle">수강한 과목을 입력하면 이수 현황과 앞으로의 이수 계획을 자동으로 분석해드립니다.</p>
+  </header>
+ 
+  <div class="steps">
+    <div class="step active" onclick="goStep(1)">
+      <span class="step-num">01</span>기본 정보
+    </div>
+    <div class="step" onclick="goStep(2)">
+      <span class="step-num">02</span>수강 과목 입력
+    </div>
+    <div class="step" onclick="goStep(3)">
+      <span class="step-num">03</span>이수 분석 결과
+    </div>
+  </div>
+ 
+  <!-- STEP 1 -->
+  <div class="page active" id="page1">
+    <div class="card">
+      <div class="card-title">기본 정보 입력</div>
+      <div class="form-row">
+        <div>
+          <label>소속 단과대학</label>
+          <select id="college" onchange="updateDeptOptions()">
+            <option value="">선택해주세요</option>
+            <option value="첨바융_혁신신약">첨단바이오융합대학 - 혁신신약공학</option>
+            <option value="첨바융_바이오소재">첨단바이오융합대학 - 바이오첨단소재공학</option>
+            <option value="첨바융_디지털바이오">첨단바이오융합대학 - 디지털바이오공학</option>
+            <option value="공과대학_응화생">공과대학 - 응용화학생명공학과</option>
+            <option value="기타">그 외 학과</option>
+          </select>
+        </div>
+        <div>
+          <label>학년</label>
+          <select id="grade">
+            <option value="">선택해주세요</option>
+            <option value="1">1학년</option>
+            <option value="2">2학년</option>
+            <option value="3">3학년</option>
+            <option value="4">4학년</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div>
+          <label>연계전공 신청 구분</label>
+          <select id="majorType">
+            <option value="">선택해주세요</option>
+            <option value="복수">복수전공</option>
+            <option value="부전공">부전공</option>
+          </select>
+        </div>
+        <div>
+          <label>이름 (선택)</label>
+          <input type="text" id="studentName" placeholder="홍길동">
+        </div>
+      </div>
+      <div id="info-box-1" class="info-box" style="display:none;"></div>
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="goStep(2)">다음 단계 →</button>
+      </div>
+    </div>
+  </div>
+ 
+  <!-- STEP 2 -->
+  <div class="page" id="page2">
+    <div class="card">
+      <div class="selected-banner">
+        <span class="selected-count" id="selectedCountDisplay">선택된 과목: 0개 (0학점)</span>
+        <div style="display:flex;gap:8px;">
+          <button class="btn btn-ghost" style="padding:6px 14px;font-size:12px;" onclick="clearAll()">전체 해제</button>
+        </div>
+      </div>
+ 
+      <!-- 응화생 전용: 기존 수강 과목 매핑 섹션 -->
+      <div id="cbe-mapping-section" style="display:none;margin-bottom:24px;">
+        <div class="card-title">응용화학생명공학과 수강 과목 → 연계전공 자동 인정</div>
+        <div class="info-box" style="margin-bottom:14px;">
+          아래에서 기존에 수강한 <strong>응화생 과목</strong>을 선택하면 매핑되는 연계전공 과목이 자동으로 인정됩니다.<br>
+          <span style="font-size:12px;color:var(--text-dim);">인정 기준: 제공된 과목 매핑 테이블 기준 (일부 과목은 연계전공 목록에 없어 인정 불가)</span>
+        </div>
+        <div class="course-grid" id="cbeMappingGrid"></div>
+        <div id="cbe-mapping-result" style="margin-top:12px;font-size:12px;color:var(--accent3);"></div>
+        <div class="divider"></div>
+      </div>
+ 
+      <!-- 진입 전 / 진입 후 탭 -->
+      <div style="display:flex;border:1px solid var(--border);border-radius:8px;overflow:hidden;margin-bottom:20px;">
+        <div id="tab-before" onclick="switchSection('before')"
+          style="flex:1;padding:14px;text-align:center;cursor:pointer;background:rgba(0,200,255,0.08);border-right:1px solid var(--border);transition:all 0.2s;">
+          <div style="font-size:13px;font-weight:700;color:var(--accent);">📚 연계전공 진입 전</div>
+          <div style="font-size:11px;color:var(--text-dim);margin-top:3px;">이미 들은 과목 — 인정 여부 확인</div>
+        </div>
+        <div id="tab-after" onclick="switchSection('after')"
+          style="flex:1;padding:14px;text-align:center;cursor:pointer;background:transparent;transition:all 0.2s;">
+          <div style="font-size:13px;font-weight:700;color:var(--text-dim);">🎓 연계전공 진입 후</div>
+          <div style="font-size:11px;color:var(--text-dim);margin-top:3px;">진입 후 새로 들은 과목 — 70% 카운트</div>
+        </div>
+      </div>
+ 
+      <div id="section-desc" style="font-size:13px;color:var(--text-dim);margin-bottom:14px;padding:10px 14px;background:var(--surface2);border-radius:6px;border-left:3px solid var(--accent);">
+        연계전공 진입 <strong>전</strong>에 수강한 과목을 선택해주세요. 인정 여부와 남은 이수 과목을 확인할 수 있습니다.
+      </div>
+ 
+      <div class="course-search-wrap">
+        <span class="search-icon">🔍</span>
+        <input type="text" placeholder="과목명 검색..." oninput="filterCourses(this.value)" id="searchInput">
+      </div>
+ 
+      <div class="filter-tabs">
+        <div class="ftab active" onclick="setFilter('all',this)">전체</div>
+        <div class="ftab" onclick="setFilter('required',this)">전필만</div>
+        <div class="ftab" onclick="setFilter('elective',this)">전선만</div>
+        <div class="ftab" onclick="setFilter('selected',this)">선택한 과목</div>
+      </div>
+ 
+      <div class="course-grid" id="courseGrid"></div>
+ 
+      <div class="btn-row">
+        <button class="btn btn-ghost" onclick="goStep(1)">← 이전</button>
+        <button class="btn btn-primary" onclick="analyze()">분석하기 →</button>
+      </div>
+    </div>
+  </div>
+ 
+  <!-- STEP 3 -->
+  <div class="page" id="page3">
+    <div id="resultContent"></div>
+    <div class="btn-row" style="margin-top:0;">
+      <button class="btn btn-ghost" onclick="goStep(2)">← 다시 선택</button>
+      <button class="btn btn-primary" onclick="window.print()">🖨 결과 인쇄</button>
+    </div>
+    <div class="export-note">※ 이 분석 결과는 참고용이며, 정확한 이수 요건은 담당 교수님 또는 학사팀에 확인하세요.</div>
+  </div>
+</div>
+ 
+<script>
+// ===== DATA =====
+// 전필 학점: 생물정보학 및 실습 = 4학점, 첨단바이오융합 산업동향 = 2학점 (2025 요람 기준)
+const REQUIRED_COURSES = [
+  { id: 'r1', name: '생물통계', credits: 3, semester: '2-1', type: 'required' },
+  { id: 'r2', name: '분자생물학', credits: 3, semester: '2-1', type: 'required' },
+  { id: 'r3', name: '단위조작', credits: 3, semester: '2-1', type: 'required' },
+  { id: 'r4', name: '유기화학', credits: 3, semester: '2-1', type: 'required' },
+  { id: 'r5', name: '생화학', credits: 3, semester: '2-2', type: 'required' },
+  { id: 'r6', name: '생물정보학 및 실습', credits: 4, semester: '2-2', type: 'required' },
+  { id: 'r7', name: '첨단바이오융합 산업동향', credits: 2, semester: '4-1', type: 'required' },
+  { id: 'r8', name: '창업과 지식재산권', credits: 3, semester: '4-2', type: 'required' },
+];
+ 
+const ELECTIVE_COURSES = [
+  { id: 'e1', name: '컴퓨터프로그래밍실습', credits: 3, semester: '2-2', type: 'elective' },
+  { id: 'e2', name: '인공지능프로그래밍언어기초', credits: 3, semester: '2-2', type: 'elective' },
+  { id: 'e3', name: '화학생물분석', credits: 3, semester: '2-2', type: 'elective' },
+  { id: 'e4', name: '바이오분석화학', credits: 3, semester: '2-2', type: 'elective' },
+  { id: 'e5', name: '생물공정공학', credits: 3, semester: '3-1', type: 'elective' },
+  { id: 'e6', name: '단백질공학', credits: 3, semester: '3-1', type: 'elective' },
+  { id: 'e7', name: '항체공학', credits: 3, semester: '3-1', type: 'elective' },
+  { id: 'e8', name: '세포면역학', credits: 3, semester: '3-1', type: 'elective' },
+  { id: 'e9', name: '신경생물학', credits: 3, semester: '3-1', type: 'elective' },
+  { id: 'e10', name: '효소공학', credits: 3, semester: '3-1', type: 'elective' },
+  { id: 'e11', name: '생물분리정제', credits: 3, semester: '3-2', type: 'elective' },
+  { id: 'e12', name: '합성생물학', credits: 3, semester: '3-2', type: 'elective' },
+  { id: 'e13', name: '미생물공학', credits: 3, semester: '3-2', type: 'elective' },
+  { id: 'e14', name: '면역학', credits: 3, semester: '3-2', type: 'elective' },
+  { id: 'e15', name: '응용미생물학', credits: 3, semester: '3-2', type: 'elective' },
+  { id: 'e16', name: '바이오인포매틱스', credits: 3, semester: '3-2', type: 'elective' },
+  { id: 'e17', name: '빅데이터 개론 및 분석', credits: 3, semester: '3-2', type: 'elective' },
+  { id: 'e18', name: '의공학개론과 스타트업', credits: 3, semester: '3-2', type: 'elective' },
+  { id: 'e19', name: 'AI개론', credits: 3, semester: '4-1', type: 'elective' },
+  { id: 'e20', name: 'AI신약', credits: 3, semester: '4-2', type: 'elective' },
+  { id: 'e21', name: '독성학', credits: 3, semester: '4-1', type: 'elective' },
+  { id: 'e22', name: '구조기반신약개발', credits: 3, semester: '4-1', type: 'elective' },
+  { id: 'e23', name: '세포공학', credits: 3, semester: '4-1', type: 'elective' },
+  { id: 'e24', name: '약동학-약력학', credits: 3, semester: '4-2', type: 'elective' },
+  { id: 'e25', name: '세포및유전자치료제', credits: 3, semester: '4-2', type: 'elective' },
+  { id: 'e26', name: '첨단바이오GMP', credits: 3, semester: '4-2', type: 'elective' },
+  { id: 'e27', name: '단백질구조모델링및설계', credits: 3, semester: '4-1', type: 'elective' },
+  { id: 'e28', name: '기기분석', credits: 3, semester: '4-1', type: 'elective' },
+  { id: 'e29', name: '혁신신약캡스톤디자인', credits: 3, semester: '4', type: 'elective', special: 'capstone' },
+  { id: 'e30', name: '바이오구조역학', credits: 3, semester: '4-2', type: 'elective' },
+  { id: 'e31', name: '첨단소재화학', credits: 3, semester: '4-2', type: 'elective' },
+  { id: 'e32', name: '의료인공지능실습', credits: 2, semester: '3-1', type: 'elective' },
+  { id: 'e33', name: '생물배양공정실험', credits: 2, semester: '3-1', type: 'elective' },
+  { id: 'e34', name: '디지털바이오의약품설계실험', credits: 2, semester: '3-2', type: 'elective' },
+  { id: 'e35', name: '혁신신약현장실무', credits: 3, semester: '3-4', type: 'elective', special: 'internship' },
+  { id: 'e36', name: '분석화학실험', credits: 2, semester: '3-1', type: 'elective' },
+  { id: 'e37', name: '생물분리정제실험', credits: 2, semester: '3-2', type: 'elective' },
+  { id: 'e38', name: '인공지능바이오의약품설계실험', credits: 2, semester: '3-2', type: 'elective' },
+  { id: 'e39', name: '혁신신약졸업연구', credits: 3, semester: '4', type: 'elective', special: 'graduation' },
+  { id: 'e40', name: '바이오의약품공정실습', credits: 3, semester: '4-1', type: 'elective' },
+  { id: 'e41', name: '바이오의약품CMC실습', credits: 3, semester: '4-2', type: 'elective' },
+];
+ 
+const ALL_COURSES = [...REQUIRED_COURSES, ...ELECTIVE_COURSES];
+ 
+// ===== 응화생 과목 → 연계전공 과목 매핑 (스크린샷 기준) =====
+// key: 응화생 과목명, value: 매핑되는 연계전공 과목 id
+const CBE_MAPPING = {
+  // 전필 매핑
+  '분리분석실험':       null,          // 응화생 전공필수, 연계전공에는 없음
+  '분자생물학실험':     null,          // 응화생 전공필수 (분자생물학실험) → 연계전공에 없음
+  '유기화학1':          'r4',          // → 유기화학
+  '화학생명공학양론':   null,          // X (연계전공 없음)
+  '분자생물학Ⅰ':        'r2',          // → 분자생물학
+  '생화학실험':         null,          // 연계전공 없음
+  '화학반응공정실험':   null,          // X
+  '화학생명공학단위조작': 'r3',        // → 단위조작
+  '세포공학실험':       null,          // 연계전공 없음
+  '생물공정실험':       null,          // 연계전공 없음
+  '화학생명공학종합설계': 'e29',       // → 혁신신약캡스톤디자인 (캡스톤디자인1,2)
+  '생화학':             'r5',          // → 생화학
+  '물리화학1':          null,          // X
+ 
+  // 전선 매핑 (스크린샷 기준)
+  '화학생물분석':       'e3',          // → 화학생물분석
+  '분자생물학Ⅱ':        null,          // → 분자생명공학 (첨단공학심(전선)-공통) — 연계전공 목록에 없음
+  'AI 빅데이터':        null,          // → AI 빅데이터 (첨단공학선택) — 연계전공 목록에 없음
+  '생물물리화학':       null,          // → 생물물리 (첨단공학심(전선)-공통)
+  '유기화학2':          null,          // X
+  '생물화학공학':       null,          // 연계전공 별도 없음
+  '효소공학':           'e10',         // → 효소공학
+  '미생물학':           null,          // → 미생물학 (첨단공학심(전선)-소재)
+  '단백질공학':         'e6',          // → 단백질공학
+  '분자도안 및 합성':   null,          // → 분자도안 및 합성 (첨단공학선택)
+  '면역학':             'e14',         // → 면역학
+  '식품공학':           null,          // → 식품공학 (첨단공학선택)
+  '응용생화학':         null,          // X
+  '줄기세포공학':       null,          // X
+  '세포공학':           'e23',         // → 세포공학 (첨단공학심(전선)-신약)
+  '세포학':             null,          // → 세포생물학 (첨단공학심(전선)-신약)
+  '유전공학':           null,          // X
+  '의약화학':           null,          // → 의약화학 (첨단공학심(전선)-신약)
+  '기기분석 및 측정':   'e28',         // → 기기분석 (바이오분석화학로 대응)
+  '생물화학공학(CBE343)': null,        // → 생물화학공학 (첨단공학심(전선))
+  '미생물공학':         'e13',         // → 미생물공학 (첨단공학심(전선))
+  '공학인턴십1~4':      'e35',         // → 바이오헬스 현장실무 1-6 (혁신신약현장실무)
+  '유전체공학':         'e12',         // → 합성생물학 (화학유전체학 → 합성생물학)
+  '화학유전체학':       null,          // → 소분자 혁신신약
+  '의생명공학':         null,          // → 의생명공학 (첨단공학선택)
+  '발효공학':           null,          // → 생물배양공학 및 모델링 (첨단공학선택)
+  '식품안전공학':       null,          // → 병원미생물학/항생물질화학
+  '생물분리정제공학':   'e11',         // → 생물분리정제
+  '세포 및 유전자치료제': 'e25',       // → 세포 및 유전자치료제 (줄기세포공학→세포및유전자치료제)
+};
+ 
+// Pre-recognized courses per college (2025 요람 기준)
+// 응화생 전필인정: 생물통계(r1), 분자생물학(r2), 단위조작(r3), 유기화학(r4), 생화학(r5), 생물정보학및실습(r6)
+// → 과목명 대응: CBE222 분자생물학I≒분자생물학, CBE348 화학생명공학단위조작≒단위조작, CBE231 유기화학1≒유기화학, CBE321 생화학≒생화학
+const RECOGNIZED = {
+  '첨바융_혁신신약': {
+    required: ['r1','r2','r3','r4','r5','r6','r7','r8'],
+    graduationWarning: true,
+    note: '혁신신약공학 전공자는 연계전공 전필 8과목이 모두 제1전공 과목과 중복 인정됩니다. 추가 수업부담 없음.<br><br>⚠️ <strong>졸업 주의:</strong> 연계전공은 제1전공 졸업요건으로 불인정됩니다. 졸업을 위해서는 반드시 <strong>혁신신약공학 심화과정 이수</strong> 또는 <strong>타 전공 복수/부전공</strong>을 별도로 이수해야 합니다. (예: 바이오첨단소재공학 복수전공 + 연계전공 가능)'
+  },
+  '첨바융_바이오소재': {
+    required: ['r1','r2','r3','r4','r5','r6','r7','r8'],
+    graduationWarning: true,
+    note: '바이오첨단소재공학 전공자는 연계전공 전필 8과목이 모두 제1전공 과목과 중복 인정됩니다. 단, <strong>혁신신약공학 졸업연구 또는 캡스톤디자인</strong> 수강이 추가로 필요합니다.<br><br>⚠️ <strong>졸업 주의:</strong> 연계전공은 제1전공 졸업요건으로 불인정됩니다. 졸업을 위해서는 <strong>바이오첨단소재공학 심화과정 이수</strong> 또는 <strong>타 전공 복수/부전공</strong>을 별도로 이수해야 합니다.'
+  },
+  '첨바융_디지털바이오': {
+    required: ['r1','r2','r3','r4','r5','r6','r7','r8'],
+    graduationWarning: true,
+    note: '디지털바이오공학 전공자는 연계전공 전필 8과목이 모두 제1전공 과목과 중복 인정됩니다. 단, <strong>혁신신약공학 졸업연구 또는 캡스톤디자인</strong> 수강이 추가로 필요합니다.<br><br>⚠️ <strong>졸업 주의:</strong> 연계전공은 제1전공 졸업요건으로 불인정됩니다. 졸업을 위해서는 별도의 <strong>복수/부전공 또는 심화전공</strong>을 이수해야 합니다.'
+  },
+  '공과대학_응화생': {
+    required: ['r1','r2','r3','r4','r5','r6'],
+    extra_required: ['r7','r8'],
+    graduationWarning: false,
+    note: '응용화학생명공학과 전공자는 전필 중 <strong>생물통계, 분자생물학, 단위조작, 유기화학, 생화학, 생물정보학 및 실습</strong> (6과목)이 기존 전공 과목과 중복 인정됩니다.<br>추가로 <strong>첨단바이오융합 산업동향(2학점)</strong>과 <strong>창업과 지식재산권(3학점)</strong> 2과목을 새로 수강해야 합니다.<br><br>전선 진입 후 복수전공은 약 10과목, 부전공은 약 3과목 추가 수강 필요.'
+  },
+  '기타': {
+    required: [],
+    graduationWarning: false,
+    note: '그 외 학과 전공자는 전필 8과목을 모두 이수해야 합니다. (생물통계, 분자생물학, 단위조작, 유기화학, 생화학, 생물정보학 및 실습, 첨단바이오융합 산업동향, 창업과 지식재산권)<br>전선 진입 후 복수전공은 약 10과목, 부전공은 약 3과목 추가 수강 필요.'
+  },
+};
+ 
+// State
+let selectedBefore = new Set();   // 연계전공 진입 전 수강 과목 (인정 여부 확인용)
+let selectedAfter = new Set();    // 연계전공 진입 후 수강 과목 (70% 직접이수 카운트용)
+let selectedCBE = new Set();      // 응화생에서 수강한 과목 (자동인정용)
+let currentFilter = 'all';
+let currentSection = 'before';    // 현재 선택 중인 섹션
+let searchQuery = '';
+ 
+// 응화생 수강 과목 목록 (스크린샷 전체 기준)
+const CBE_COURSE_LIST = [
+  // ---- 전공필수 ----
+  { name: '분자생물학Ⅰ', code: 'CBE222', type: 'required', mapsTo: 'r2' },
+  { name: '유기화학1', code: 'CBE231', type: 'required', mapsTo: 'r4' },
+  { name: '화학생명공학단위조작', code: 'CBE348', type: 'required', mapsTo: 'r3' },
+  { name: '생화학', code: 'CBE321', type: 'required', mapsTo: 'r5' },
+  { name: '분리분석실험', code: 'CBE215', type: 'required', mapsTo: null },
+  { name: '분자생물학실험', code: 'CBE217', type: 'required', mapsTo: null },
+  { name: '화학생명공학양론', code: 'CBE243', type: 'required', mapsTo: null },
+  { name: '생화학실험', code: 'CBE216', type: 'required', mapsTo: null },
+  { name: '화학반응공정실험', code: 'CBE315', type: 'required', mapsTo: null },
+  { name: '세포공학실험', code: 'CBE317', type: 'required', mapsTo: null },
+  { name: '생물공정실험', code: 'CBE316', type: 'required', mapsTo: null },
+  { name: '고분자합성실험', code: 'CBE318', type: 'required', mapsTo: null },
+  { name: '화학생명공학종합설계', code: 'CBE444', type: 'required', mapsTo: 'e29' },
+  { name: '유기합성실험', code: 'CBE218', type: 'required', mapsTo: null },
+  { name: '물리화학1', code: 'CBE232', type: 'required', mapsTo: null },
+  // ---- 전공선택 ----
+  { name: '화학생물분석', code: 'CBE214', type: 'elective', mapsTo: 'e3' },
+  { name: '분자생물학Ⅱ', code: 'CBE223', type: 'elective', mapsTo: null },
+  { name: '생물화학공학', code: 'CBE343', type: 'elective', mapsTo: null },
+  { name: '생물물리화학', code: 'CBE232b', type: 'elective', mapsTo: null },
+  { name: '효소공학', code: 'CBE345', type: 'elective', mapsTo: 'e10' },
+  { name: '단백질공학', code: 'CBE326', type: 'elective', mapsTo: 'e6' },
+  { name: '면역학', code: 'CBE3210', type: 'elective', mapsTo: 'e14' },
+  { name: '미생물학', code: 'CBE322', type: 'elective', mapsTo: null },
+  { name: '미생물공학', code: 'CBE347', type: 'elective', mapsTo: 'e13' },
+  { name: '세포학', code: 'CBE323', type: 'elective', mapsTo: null },
+  { name: '세포공학', code: 'CBE323b', type: 'elective', mapsTo: 'e23' },
+  { name: '줄기세포공학', code: 'CBE3214', type: 'elective', mapsTo: 'e25' },
+  { name: '의약화학', code: 'CBE337', type: 'elective', mapsTo: null },
+  { name: '의생명공학', code: 'CBE4414', type: 'elective', mapsTo: null },
+  { name: '기기분석 및 측정', code: 'CBE431', type: 'elective', mapsTo: 'e28' },
+  { name: '식품공학', code: 'CBE3211', type: 'elective', mapsTo: null },
+  { name: '응용생화학', code: 'CBE3213', type: 'elective', mapsTo: null },
+  { name: '유전공학', code: 'CBE325', type: 'elective', mapsTo: null },
+  { name: '화학유전체학', code: 'CBE426', type: 'elective', mapsTo: null },
+  { name: '유전체공학', code: 'CBE422', type: 'elective', mapsTo: 'e12' },
+  { name: '발효공학', code: 'CBE4415', type: 'elective', mapsTo: null },
+  { name: '생물분리정제공학', code: 'CBE447', type: 'elective', mapsTo: 'e11' },
+  { name: '식품안전공학', code: 'CBE4417', type: 'elective', mapsTo: null },
+  { name: '공학인턴십 1~4', code: 'EINT101-106', type: 'elective', mapsTo: 'e35' },
+];
+ 
+function renderCBEMappingGrid() {
+  const grid = document.getElementById('cbeMappingGrid');
+  grid.innerHTML = CBE_COURSE_LIST.map(c => {
+    const mapped = c.mapsTo ? ALL_COURSES.find(x => x.id === c.mapsTo) : null;
+    const isSelected = selectedCBE.has(c.code);
+    const mappedLabel = mapped
+      ? `<span style="font-size:10px;color:var(--accent3);">→ ${mapped.name}</span>`
+      : `<span style="font-size:10px;color:var(--text-dim);">연계전공 인정 없음</span>`;
+    return `
+      <div class="course-item ${isSelected ? 'selected' : ''} ${!c.mapsTo ? 'cbe-no-map' : ''}"
+           onclick="toggleCBE('${c.code}')" style="${!c.mapsTo ? 'opacity:0.55;' : ''}">
+        <div class="course-check">✓</div>
+        <div style="flex:1;min-width:0;">
+          <div class="course-name" style="font-size:12px;">${c.name}</div>
+          <div style="margin-top:2px;">${mappedLabel}</div>
+        </div>
+        <span class="course-badge ${c.type === 'required' ? 'badge-required' : 'badge-elective'}" style="font-size:9px;">${c.type === 'required' ? '전필' : '전선'}</span>
+      </div>`;
+  }).join('');
+  updateCBEMappingResult();
+}
+ 
+function toggleCBE(code) {
+  if (selectedCBE.has(code)) selectedCBE.delete(code);
+  else selectedCBE.add(code);
+  renderCBEMappingGrid();
+  updateSelectedDisplay();
+}
+ 
+function getMappedFromCBE() {
+  // 응화생 수강 과목에서 매핑되는 연계전공 과목 id 집합 반환
+  const mapped = new Set();
+  for (const code of selectedCBE) {
+    const cbe = CBE_COURSE_LIST.find(c => c.code === code);
+    if (cbe && cbe.mapsTo) mapped.add(cbe.mapsTo);
+  }
+  return mapped;
+}
+ 
+function updateCBEMappingResult() {
+  const mapped = getMappedFromCBE();
+  const resultDiv = document.getElementById('cbe-mapping-result');
+  if (mapped.size === 0) {
+    resultDiv.innerHTML = '';
+    return;
+  }
+  const names = [...mapped].map(id => {
+    const c = ALL_COURSES.find(x => x.id === id);
+    return c ? `<span style="background:rgba(16,185,129,0.15);border:1px solid rgba(16,185,129,0.3);border-radius:4px;padding:2px 8px;margin:2px;display:inline-block;">${c.name}</span>` : '';
+  }).join('');
+  resultDiv.innerHTML = `✅ <strong>${mapped.size}개 연계전공 과목 자동 인정:</strong><br style="margin-bottom:4px;">${names}`;
+  updateSelectedDisplay();
+}
+ 
+function updateDeptOptions() {
+  const college = document.getElementById('college').value;
+  const box = document.getElementById('info-box-1');
+  if (college && RECOGNIZED[college]) {
+    const rec = RECOGNIZED[college];
+    box.style.display = 'block';
+    const warnHtml = rec.graduationWarning
+      ? `<div class="warn-box" style="margin-top:12px;margin-bottom:0;">🎓 <strong>졸업요건 주의사항</strong><br>연계전공은 제1전공 졸업요건으로 <strong>불인정</strong>됩니다. 졸업을 위해 아래 중 하나가 별도로 필요합니다:<br>① 제1전공 심화과정 이수 &nbsp;② 타 전공 복수전공 이수 &nbsp;③ 마이크로전공 2개 이상 이수<br><span style="color:#fcd34d;font-size:12px;">단, 첨바융 내 두 전공(혁신신약↔바이오첨단소재) 간 복수전공 + 연계전공 조합은 가능합니다.</span></div>`
+      : '';
+    box.innerHTML = `<strong>📋 해당 학과 안내:</strong><br>${rec.note}${warnHtml}`;
+  } else {
+    box.style.display = 'none';
+  }
+}
+ 
+function goStep(n) {
+  if (n === 2) {
+    const col = document.getElementById('college').value;
+    const grade = document.getElementById('grade').value;
+    const mt = document.getElementById('majorType').value;
+    if (!col || !grade || !mt) {
+      alert('소속 단과대학, 학년, 전공 구분을 모두 선택해주세요.');
+      return;
+    }
+    // 응화생 전용 섹션 표시 여부
+    const cbeSection = document.getElementById('cbe-mapping-section');
+    if (col === '공과대학_응화생') {
+      cbeSection.style.display = 'block';
+      renderCBEMappingGrid();
+    } else {
+      cbeSection.style.display = 'none';
+    }
+  }
+  document.querySelectorAll('.page').forEach((p,i) => {
+    p.classList.toggle('active', i === n-1);
+  });
+  document.querySelectorAll('.step').forEach((s,i) => {
+    s.classList.remove('active','done');
+    if (i === n-1) s.classList.add('active');
+    if (i < n-1) s.classList.add('done');
+  });
+  if (n === 2) renderCourseGrid();
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+ 
+function switchSection(section) {
+  currentSection = section;
+  searchQuery = '';
+  document.getElementById('searchInput').value = '';
+ 
+  const tabBefore = document.getElementById('tab-before');
+  const tabAfter = document.getElementById('tab-after');
+  const desc = document.getElementById('section-desc');
+ 
+  if (section === 'before') {
+    tabBefore.style.background = 'rgba(0,200,255,0.08)';
+    tabBefore.querySelector('div').style.color = 'var(--accent)';
+    tabAfter.style.background = 'transparent';
+    tabAfter.querySelector('div').style.color = 'var(--text-dim)';
+    desc.style.borderLeftColor = 'var(--accent)';
+    desc.innerHTML = '연계전공 진입 <strong>전</strong>에 수강한 과목을 선택해주세요. 인정 여부와 남은 이수 과목을 확인할 수 있습니다.';
+  } else {
+    tabAfter.style.background = 'rgba(16,185,129,0.08)';
+    tabAfter.querySelector('div').style.color = 'var(--accent3)';
+    tabBefore.style.background = 'transparent';
+    tabBefore.querySelector('div').style.color = 'var(--text-dim)';
+    desc.style.borderLeftColor = 'var(--accent3)';
+    desc.innerHTML = '연계전공 진입 <strong>후</strong> 새로 수강한 과목을 선택해주세요. 이 과목들이 <strong style="color:var(--accent3);">70% 직접이수 조건</strong>에 카운트됩니다.';
+  }
+ 
+  // 필터 초기화
+  currentFilter = 'all';
+  document.querySelectorAll('.ftab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.ftab')[0].classList.add('active');
+ 
+  renderCourseGrid();
+}
+ 
+function renderCourseGrid() {
+  const grid = document.getElementById('courseGrid');
+  const activeSet = currentSection === 'before' ? selectedBefore : selectedAfter;
+  const otherSet = currentSection === 'before' ? selectedAfter : selectedBefore;
+ 
+  let courses = ALL_COURSES;
+  if (currentFilter === 'required') courses = courses.filter(c => c.type === 'required');
+  else if (currentFilter === 'elective') courses = courses.filter(c => c.type === 'elective');
+  else if (currentFilter === 'selected') courses = courses.filter(c => activeSet.has(c.id));
+  if (searchQuery) courses = courses.filter(c => c.name.includes(searchQuery));
+ 
+  if (courses.length === 0) {
+    grid.innerHTML = '<div class="empty-state">검색 결과가 없습니다.</div>';
+    return;
+  }
+ 
+  const accentColor = currentSection === 'before' ? 'var(--accent)' : 'var(--accent3)';
+ 
+  grid.innerHTML = courses.map(c => {
+    const isActive = activeSet.has(c.id);
+    const isOther = otherSet.has(c.id);
+    return `
+      <div class="course-item ${isActive ? 'selected' : ''}"
+           style="${isOther ? 'opacity:0.45;pointer-events:none;' : ''}"
+           onclick="toggleCourse('${c.id}')"
+           title="${isOther ? (currentSection==='before' ? '진입 후 선택된 과목' : '진입 전 선택된 과목') : ''}">
+        <div class="course-check" style="${isActive ? 'border-color:'+accentColor+';color:'+accentColor : ''}">✓</div>
+        <span class="course-name">${c.name}</span>
+        ${isOther ? `<span style="font-size:10px;color:var(--text-dim);">${currentSection==='before'?'진입후':'진입전'}</span>` : ''}
+        <span class="credits-badge">${c.credits}학점</span>
+        <span class="course-badge ${c.type === 'required' ? 'badge-required' : 'badge-elective'}">${c.type === 'required' ? '전필' : '전선'}</span>
+      </div>`;
+  }).join('');
+  updateSelectedDisplay();
+}
+ 
+function toggleCourse(id) {
+  const activeSet = currentSection === 'before' ? selectedBefore : selectedAfter;
+  if (activeSet.has(id)) activeSet.delete(id);
+  else activeSet.add(id);
+  renderCourseGrid();
+}
+ 
+function clearAll() {
+  if (currentSection === 'before') selectedBefore.clear();
+  else selectedAfter.clear();
+  renderCourseGrid();
+}
+ 
+function updateSelectedDisplay() {
+  const beforeCredits = [...selectedBefore].reduce((s,id) => { const c=ALL_COURSES.find(x=>x.id===id); return s+(c?c.credits:0); }, 0);
+  const afterCredits  = [...selectedAfter].reduce((s,id)  => { const c=ALL_COURSES.find(x=>x.id===id); return s+(c?c.credits:0); }, 0);
+  const cbeCredits    = [...getMappedFromCBE()].reduce((s,id) => { const c=ALL_COURSES.find(x=>x.id===id); return s+(c?c.credits:0); }, 0);
+  const totalCount = selectedBefore.size + selectedAfter.size + getMappedFromCBE().size;
+  const totalCredits = beforeCredits + afterCredits + cbeCredits;
+  document.getElementById('selectedCountDisplay').textContent =
+    `진입 전 ${selectedBefore.size}과목 · 진입 후 ${selectedAfter.size}과목 · 총 ${totalCredits}학점`;
+}
+ 
+function setFilter(f, el) {
+  currentFilter = f;
+  document.querySelectorAll('.ftab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  renderCourseGrid();
+}
+ 
+function filterCourses(q) {
+  searchQuery = q;
+  renderCourseGrid();
+}
+ 
+function analyze() {
+  const college = document.getElementById('college').value;
+  const grade = parseInt(document.getElementById('grade').value);
+  const majorType = document.getElementById('majorType').value;
+  const studentName = document.getElementById('studentName').value || '학생';
+ 
+  const rec = RECOGNIZED[college];
+ 
+  // 자동인정 (제1전공 중복인정)
+  const autoRecognized = new Set(rec.required || []);
+ 
+  // 응화생 매핑 인정
+  const cbeAutoMapped = college === '공과대학_응화생' ? getMappedFromCBE() : new Set();
+ 
+  // 진입 전 + 진입 후 모두 합산 → 인정 여부 판단용
+  const selectedCourses = new Set([...selectedBefore, ...selectedAfter]);
+ 
+  // 전체 이수 인정 과목 = 자동인정 + CBE매핑 + 직접선택(전후 합산)
+  const allCompleted = new Set([...autoRecognized, ...cbeAutoMapped, ...selectedCourses]);
+ 
+  // 진입 후 직접이수 학점 (70% 조건용) — 자동인정·CBE매핑 제외, 진입 후 선택분만
+  const afterCredits = ALL_COURSES
+    .filter(c => selectedAfter.has(c.id))
+    .reduce((s,c) => s+c.credits, 0);
+ 
+  // Required analysis
+  const reqCompleted = REQUIRED_COURSES.filter(c => allCompleted.has(c.id));
+  const reqMissing = REQUIRED_COURSES.filter(c => !allCompleted.has(c.id));
+  const reqCreditsCompleted = reqCompleted.reduce((s,c) => s+c.credits, 0);
+  const reqCreditsTotal = REQUIRED_COURSES.reduce((s,c) => s+c.credits, 0); // 24
+ 
+  // Elective analysis
+  const elecCompleted = ELECTIVE_COURSES.filter(c => allCompleted.has(c.id));
+  const elecCreditsCompleted = elecCompleted.reduce((s,c) => s+c.credits, 0);
+ 
+  // Requirements by type
+  let reqNeeded, elecNeeded;
+  if (majorType === '복수') {
+    reqNeeded = 21; elecNeeded = 21;
+  } else {
+    reqNeeded = 12; elecNeeded = 9;
+  }
+ 
+  // Special: 부전공 전필 rule - choose 3 from: 유기화학, 분자생물학, 단위조작, 생물정보학실습, 생화학
+  const minorSpecialIds = ['r2','r3','r4','r5','r6']; // 분자생물학, 단위조작, 유기화학, 생화학, 생물정보학실습
+  let effectiveReqCredits = reqCreditsCompleted;
+  if (majorType === '부전공') {
+    const specialDone = minorSpecialIds.filter(id => allCompleted.has(id));
+    effectiveReqCredits = specialDone.length * 3;
+    // Also add 첨단바이오 산업동향, 창업지재권 if done
+    if (allCompleted.has('r7')) effectiveReqCredits += 3;
+    if (allCompleted.has('r8')) effectiveReqCredits += 3;
+  }
+ 
+  // Capstone/graduation check
+  const hasCapstone = allCompleted.has('e29');
+  const hasGraduation = allCompleted.has('e39');
+  const hasCapstoneOrGrad = hasCapstone || hasGraduation;
+ 
+  // Credits summary
+  const totalReqDone = Math.min(effectiveReqCredits, reqNeeded);
+  const totalElecDone = Math.min(elecCreditsCompleted, elecNeeded);
+  const totalDone = totalReqDone + totalElecDone;
+  const totalNeeded = reqNeeded + elecNeeded;
+ 
+  // Remaining
+  const reqRemaining = Math.max(0, reqNeeded - effectiveReqCredits);
+  const elecRemaining = Math.max(0, elecNeeded - elecCreditsCompleted);
+ 
+  // ===== 70% 이수 규정 안내 =====
+  // 연계전공 진입 후, 총 이수학점의 70% 이상을 연계전공에서 직접 수강해야 함
+  // 자동인정·기존 수강 과목과 무관하게 진입 후 새로 이수해야 할 최소 학점
+  // - 부전공: 21학점 × 70% = 15학점 이상
+  // - 복수전공: 42학점 × 70% = 30학점 이상
+  const seventyPctRequired = Math.ceil(totalNeeded * 0.7);
+ 
+  // Recommendations: electives not yet completed, sorted by semester
+  const semesterOrder = {'2-1':1,'2-2':2,'3-1':3,'3-2':4,'4-1':5,'4-2':6,'3-4':3.5,'4':5};
+  const recommended = ELECTIVE_COURSES
+    .filter(c => !allCompleted.has(c.id))
+    .sort((a,b) => (semesterOrder[a.semester]||9) - (semesterOrder[b.semester]||9));
+ 
+  // Status
+  const allRequirementsMet = totalDone >= totalNeeded && hasCapstoneOrGrad;
+  const pct = Math.round(totalDone / totalNeeded * 100);
+  const statusLabel = allRequirementsMet ? '이수 완료' : pct >= 60 ? '이수 진행 중' : '이수 초기';
+  const statusClass = allRequirementsMet ? 'chip-ok' : pct >= 60 ? 'chip-warn' : 'chip-bad';
+ 
+  // Missing req courses that need to be taken
+  const missingReqForMinor = majorType === '부전공'
+    ? minorSpecialIds.filter(id => !allCompleted.has(id)).map(id => ALL_COURSES.find(c=>c.id===id))
+    : reqMissing;
+ 
+  // Timeline data
+  const semesters = [
+    { label: '2학년 1학기', key: '2-1' },
+    { label: '2학년 2학기', key: '2-2' },
+    { label: '3학년', key: '3-1,3-2,3-4' },
+    { label: '4학년', key: '4-1,4-2,4' },
+  ];
+ 
+  // 인정학점 기준 상태 (전필+전선만)
+  const reqPct = Math.round(Math.min(effectiveReqCredits, reqNeeded) / reqNeeded * 100);
+  const elecPct = Math.round(Math.min(elecCreditsCompleted, elecNeeded) / elecNeeded * 100);
+  const overallDone = (effectiveReqCredits >= reqNeeded) && (elecCreditsCompleted >= elecNeeded) && hasCapstoneOrGrad;
+ 
+  let html = `
+    <div class="card">
+      <div class="card-title">이수 분석 결과</div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px;">
+        <div>
+          <div style="font-size:20px;font-weight:700;">${studentName}님의 <span class="highlight">${majorType}</span> 이수 현황</div>
+          <div style="font-size:13px;color:var(--text-dim);margin-top:4px;">${getCollegeName(college)} · ${grade}학년</div>
+        </div>
+        <span class="chip ${overallDone ? 'chip-ok' : pct >= 60 ? 'chip-warn' : 'chip-bad'}">${overallDone ? '이수 완료' : '이수 진행 중'}</span>
+      </div>
+ 
+      <div class="progress-group">
+        <div class="progress-card">
+          <div class="progress-label">전필 이수</div>
+          <div class="progress-value" style="color:${effectiveReqCredits >= reqNeeded ? 'var(--accent3)' : 'var(--accent)'}">
+            ${Math.min(effectiveReqCredits, reqNeeded)} <span class="total">/ ${reqNeeded}학점</span>
+          </div>
+          <div class="progress-bar-bg">
+            <div class="progress-bar-fill" style="width:${Math.min(100, effectiveReqCredits/reqNeeded*100)}%;background:${effectiveReqCredits>=reqNeeded?'var(--accent3)':'var(--accent)'};"></div>
+          </div>
+          <div style="font-size:11px;margin-top:6px;color:${reqRemaining>0?'var(--danger)':'var(--accent3)'};">
+            ${reqRemaining > 0 ? `⚠ ${reqRemaining}학점 추가 필요` : '✓ 완료'}
+          </div>
+        </div>
+        <div class="progress-card">
+          <div class="progress-label">전선 이수</div>
+          <div class="progress-value" style="color:${elecCreditsCompleted >= elecNeeded ? 'var(--accent3)' : 'var(--accent2)'}">
+            ${Math.min(elecCreditsCompleted, elecNeeded)} <span class="total">/ ${elecNeeded}학점</span>
+          </div>
+          <div class="progress-bar-bg">
+            <div class="progress-bar-fill" style="width:${Math.min(100, elecCreditsCompleted/elecNeeded*100)}%;background:${elecCreditsCompleted>=elecNeeded?'var(--accent3)':'var(--accent2)'};"></div>
+          </div>
+          <div style="font-size:11px;margin-top:6px;color:${elecRemaining>0?'var(--danger)':'var(--accent3)'};">
+            ${elecRemaining > 0 ? `⚠ ${elecRemaining}학점 추가 필요` : '✓ 완료'}
+          </div>
+        </div>
+        <div class="progress-card" style="border-color:rgba(245,158,11,0.35);background:rgba(245,158,11,0.04);">
+          <div class="progress-label" style="color:var(--warn);">진입 후 직접 이수</div>
+          <div class="progress-value" style="color:${afterCredits >= seventyPctRequired ? 'var(--accent3)' : 'var(--warn)'};">
+            ${afterCredits}<span class="total">/ ${seventyPctRequired}학점</span>
+          </div>
+          <div class="progress-bar-bg">
+            <div class="progress-bar-fill" style="width:${Math.min(100, afterCredits/seventyPctRequired*100)}%;background:${afterCredits>=seventyPctRequired?'var(--accent3)':'var(--warn)'};"></div>
+          </div>
+          <div style="font-size:11px;color:var(--text-mid);margin-top:6px;">
+            총 ${totalNeeded}학점 × 70% = ${seventyPctRequired}학점 필요
+            ${afterCredits >= seventyPctRequired
+              ? '<span style="color:var(--accent3);">✓ 충족</span>'
+              : `<span style="color:var(--warn);">· ${seventyPctRequired - afterCredits}학점 더 필요</span>`}
+          </div>
+        </div>
+      </div>
+ 
+      ${getSpecialWarnings(college, majorType, allCompleted, missingReqForMinor, reqRemaining, elecRemaining, hasCapstoneOrGrad, seventyPctRequired, totalNeeded, afterCredits)}
+    </div>
+ 
+    ${reqCompleted.length > 0 || elecCompleted.length > 0 ? `
+    <div class="card">
+      <div class="card-title">이수 완료 과목</div>
+      <table class="result-table">
+        <thead>
+          <tr>
+            <th>과목명</th>
+            <th>학점</th>
+            <th>구분</th>
+            <th>인정방식</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${[...reqCompleted, ...elecCompleted].map(c => `
+            <tr>
+              <td>${c.name}</td>
+              <td><span style="font-family:'DM Mono',monospace;">${c.credits}</span></td>
+              <td><span class="chip ${c.type==='required'?'chip-bad':'chip-ok'}" style="font-size:10px;">${c.type==='required'?'전필':'전선'}</span></td>
+              <td style="font-size:12px;color:var(--text-dim);">${autoRecognized.has(c.id) ? '🔄 학과 자동인정' : cbeAutoMapped.has(c.id) ? '🔗 응화생 매핑' : selectedAfter.has(c.id) ? '🎓 진입 후 수강' : '📚 진입 전 수강'}</td>
+            </tr>
+          `).join('')}
+        </tbody>
+      </table>
+    </div>
+    ` : ''}
+ 
+    ${(reqRemaining > 0 || elecRemaining > 0 || !hasCapstoneOrGrad) ? `
+    <div class="card">
+      <div class="card-title">앞으로 들어야 할 과목</div>
+ 
+      ${missingReqForMinor.length > 0 ? `
+        <div style="margin-bottom:16px;">
+          <div style="font-size:13px;font-weight:700;color:#fca5a5;margin-bottom:10px;">🔴 미이수 전필 과목 (${majorType === '부전공' ? '3과목 중 선택 이수 필요' : '필수 이수'})</div>
+          <div class="rec-grid">
+            ${missingReqForMinor.map(c => `
+              <div class="rec-item priority">
+                <div class="rec-item-name">${c.name}</div>
+                <div class="rec-item-meta">
+                  <span>${c.credits}학점</span>
+                  <span>권장: ${c.semester}학기</span>
+                  <span class="chip chip-bad" style="font-size:10px;">전필</span>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      ` : ''}
+ 
+      ${!hasCapstoneOrGrad ? `
+        <div style="margin-bottom:16px;">
+          <div style="font-size:13px;font-weight:700;color:var(--warn);margin-bottom:10px;">🟡 필수 이수 (택1)</div>
+          <div class="rec-grid">
+            <div class="rec-item" style="border-left-color:var(--warn);">
+              <div class="rec-item-name">혁신신약졸업연구</div>
+              <div class="rec-item-meta"><span>3학점</span><span>4학년</span></div>
+            </div>
+            <div class="rec-item" style="border-left-color:var(--warn);">
+              <div class="rec-item-name">혁신신약캡스톤디자인</div>
+              <div class="rec-item-meta"><span>3학점</span><span>4학년</span></div>
+            </div>
+          </div>
+        </div>
+      ` : ''}
+ 
+      ${elecRemaining > 0 ? `
+        <div>
+          <div style="font-size:13px;font-weight:700;color:#c4b5fd;margin-bottom:10px;">🟣 권장 전선 과목 (${elecRemaining}학점 추가 필요)</div>
+          <div class="rec-grid">
+            ${recommended.slice(0, 12).map(c => `
+              <div class="rec-item normal">
+                <div class="rec-item-name">${c.name}</div>
+                <div class="rec-item-meta">
+                  <span>${c.credits}학점</span>
+                  <span>${c.semester}학기</span>
+                  ${c.special ? `<span style="color:var(--warn);">${c.special==='capstone'?'캡스톤':c.special==='graduation'?'졸업연구':'현장실무'}</span>` : ''}
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      ` : ''}
+    </div>
+    ` : `
+    <div class="card">
+      <div style="text-align:center;padding:32px 0;">
+        <div style="font-size:40px;margin-bottom:12px;">🎉</div>
+        <div style="font-size:20px;font-weight:700;color:var(--accent3);">이수 요건을 모두 충족했습니다!</div>
+        <div style="font-size:14px;color:var(--text-dim);margin-top:8px;">AI바이오의약품 융합연계전공 ${majorType} 이수가 완료되었습니다.</div>
+      </div>
+    </div>
+    `}
+ 
+    <div class="card">
+      <div class="card-title">학기별 권장 이수 체계</div>
+      <div style="display:flex;gap:16px;margin-bottom:14px;flex-wrap:wrap;font-size:12px;">
+        <span style="display:flex;align-items:center;gap:5px;"><span style="width:3px;height:12px;background:var(--danger);border-radius:2px;display:inline-block;"></span>전필</span>
+        <span style="display:flex;align-items:center;gap:5px;"><span style="width:3px;height:12px;background:var(--accent2);border-radius:2px;display:inline-block;"></span>전선</span>
+        <span style="display:flex;align-items:center;gap:5px;"><span style="opacity:0.4;font-size:13px;">취소선</span> 이수 완료</span>
+      </div>
+      ${renderTimeline(allCompleted)}
+    </div>
+  `;
+ 
+  document.getElementById('resultContent').innerHTML = html;
+  goStep(3);
+}
+ 
+function renderTimeline(allCompleted) {
+  const cols = [
+    { label: '2학년 1학기', courses: ALL_COURSES.filter(c => c.semester === '2-1') },
+    { label: '2학년 2학기', courses: ALL_COURSES.filter(c => c.semester === '2-2') },
+    { label: '3학년 1학기', courses: ALL_COURSES.filter(c => c.semester === '3-1') },
+    { label: '3학년 2학기', courses: ALL_COURSES.filter(c => c.semester === '3-2' || c.semester === '3-4') },
+    { label: '4학년 1학기', courses: ALL_COURSES.filter(c => c.semester === '4-1') },
+    { label: '4학년 2학기', courses: ALL_COURSES.filter(c => c.semester === '4-2' || c.semester === '4') },
+  ];
+ 
+  return `<div class="tl-semester-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;">` +
+    cols.map(col => `
+      <div>
+        <div class="tl-header" style="border-radius:4px 4px 0 0;margin-bottom:4px;">${col.label}</div>
+        ${col.courses.map(c => {
+          const done = allCompleted.has(c.id);
+          return `<div class="tl-course ${done ? 'done' : ''} ${c.type === 'required' ? 'req' : 'elec'}"
+            style="border-radius:3px;${done ? '' : 'opacity:1;'}">
+            ${c.name}
+            <span style="font-size:10px;opacity:0.6;font-family:'DM Mono',monospace;">${c.credits}학점</span>
+          </div>`;
+        }).join('')}
+      </div>
+    `).join('') +
+  `</div>`;
+}
+ 
+function getSpecialWarnings(college, majorType, allCompleted, missingReq, reqRemaining, elecRemaining, hasCapstoneOrGrad, seventyPctRequired, totalNeeded, afterCredits) {
+  let warnings = [];
+ 
+  if (reqRemaining > 0) {
+    warnings.push(`전필 <strong>${reqRemaining}학점</strong>이 부족합니다.`);
+  }
+  if (elecRemaining > 0) {
+    warnings.push(`전선 <strong>${elecRemaining}학점</strong>이 부족합니다.`);
+  }
+  if (!hasCapstoneOrGrad) {
+    warnings.push(`<strong>혁신신약졸업연구 또는 캡스톤디자인</strong> 중 1과목을 반드시 이수해야 합니다.`);
+  }
+ 
+  const rec = RECOGNIZED[college];
+  const gradBox = rec && rec.graduationWarning
+    ? `<div class="warn-box" style="border-color:rgba(239,68,68,0.4);background:rgba(239,68,68,0.07);color:#fca5a5;">
+        🎓 <strong style="color:#ef4444;">졸업요건 별도 충족 필요</strong><br>
+        연계전공은 제1전공 졸업요건으로 <strong>불인정</strong>됩니다.<br>
+        졸업을 위해 아래 중 하나를 별도로 이수해야 합니다:<br>
+        &nbsp;&nbsp;① 제1전공 심화과정 이수<br>
+        &nbsp;&nbsp;② 타 전공(또는 첨바융 내 다른 전공) 복수전공 이수<br>
+        &nbsp;&nbsp;③ 마이크로전공 2개 이상 이수<br>
+        <span style="font-size:12px;color:#fcd34d;">※ 첨바융 두 전공 간 복수전공 + 연계전공 조합은 가능</span>
+      </div>`
+    : '';
+ 
+  const stillNeeded70 = Math.max(0, seventyPctRequired - (afterCredits || 0));
+  const seventyNote = `<div class="warn-box" style="border-color:rgba(245,158,11,0.4);background:rgba(245,158,11,0.07);color:#fcd34d;">
+    ⚠️ <strong>진입 후 직접 이수 필수 조건</strong><br>
+    전공 진입 이후 연계전공 교과목을 <strong>${seventyPctRequired}학점 이상 직접 수강</strong>해야 합니다. (자동인정·진입 전 수강 제외)<br>
+    ${afterCredits > 0
+      ? `현재 진입 후 수강: <strong>${afterCredits}학점</strong>${stillNeeded70 > 0 ? ` → <strong style="color:var(--warn);">${stillNeeded70}학점 추가 필요</strong>` : ' <span style="color:var(--accent3);">✓ 충족</span>'}`
+      : `<span style="font-size:12px;opacity:0.8;">(총 이수학점 ${totalNeeded}학점 × 70% = ${seventyPctRequired}학점 · 전필·전선 구분 없이 충족 가능)</span>`}
+  </div>`;
+ 
+  if (warnings.length === 0 && hasCapstoneOrGrad) {
+    return gradBox + seventyNote + `<div class="info-box">✅ 연계전공 이수 요건을 모두 충족하고 있습니다.</div>`;
+  }
+ 
+  return gradBox + seventyNote + warnings.map(w => `<div class="warn-box">⚠️ ${w}</div>`).join('');
+}
+ 
+function getCollegeName(key) {
+  const map = {
+    '첨바융_혁신신약': '첨단바이오융합대학 혁신신약공학',
+    '첨바융_바이오소재': '첨단바이오융합대학 바이오첨단소재공학',
+    '첨바융_디지털바이오': '첨단바이오융합대학 디지털바이오공학',
+    '공과대학_응화생': '공과대학 응용화학생명공학과',
+    '기타': '그 외 학과',
+  };
+  return map[key] || key;
+}
+</script>
+</body>
+</html>
